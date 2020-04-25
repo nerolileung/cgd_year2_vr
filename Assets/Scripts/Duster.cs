@@ -16,16 +16,21 @@ public class Duster : MonoBehaviour
 
     public static Material[] Modes = new Material[4];
     public static GameObject[] Bullets = new GameObject[4];
+    public static GameObject[] Asteroids = new GameObject[4];
 
     private void Awake()
     {
+        // more sensibly this would be in a gamemanager
         for (int i = 0; i < 4; i++)
         {
-            Material tempM = Resources.Load<Material>("Materials/Mode " + i);
-            if (tempM !=null) Modes[i] = tempM;
+            Material tempMat = Resources.Load<Material>("Materials/Mode " + i);
+            if (tempMat !=null) Modes[i] = tempMat;
 
-            GameObject tempB = Resources.Load<GameObject>("Prefabs/Bullet " + i);
-            if (tempB != null) Bullets[i] = tempB;
+            GameObject tempBullet = Resources.Load<GameObject>("Prefabs/Bullet " + i);
+            if (tempBullet != null) Bullets[i] = tempBullet;
+
+            GameObject tempAsteroid = Resources.Load<GameObject>("Prefabs/Asteroid " + i);
+            if (tempAsteroid != null) Asteroids[i] = tempAsteroid;
         }
 
         uiAnimator = GameObject.Find("Canvas").GetComponent<Animator>();
@@ -64,5 +69,11 @@ public class Duster : MonoBehaviour
         }
 
         healthBar.anchorMax = new Vector2(currentHealth / maxHealth, 1f);
+    }
+
+    public void Alert(bool left, bool on)
+    {
+        if (left) uiAnimator.SetBool("IncomingLeft", on);
+        else uiAnimator.SetBool("IncomingRight", on);
     }
 }

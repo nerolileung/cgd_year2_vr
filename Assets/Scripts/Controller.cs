@@ -27,6 +27,8 @@ public class Controller : MonoBehaviour
         _camera = Camera.main;
 
         loadedBullet = Duster.Bullets[mode];
+
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame
@@ -45,24 +47,29 @@ public class Controller : MonoBehaviour
             temp = Input.mousePosition;
         }
         else
-        { // this breaks when parent is rotating, todo fix
+        {
             temp = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
             if (temp != Vector3.zero)
             {
-                transform.Translate(temp);
-                Debug.Log(temp);
-                // fix z axis
-                temp = transform.position;
+                temp.x += transform.localPosition.x;
+                temp.y += transform.localPosition.y;
                 temp.z = 1f;
-                transform.SetPositionAndRotation(temp, transform.rotation);
+
+                // mimic cursor lock
+                if (temp.x < -0.58f) temp.x = -0.55f;
+                else if (temp.x > 0.58f) temp.x = 0.55f;
+                if (temp.y > 0.8f) temp.y = 0.75f;
+                else if (temp.y < 0.15f) temp.y = 0.2f;
+
+                transform.localPosition = temp;
             }
             // translate to screen for turn
             temp = _camera.WorldToScreenPoint(transform.position);
         }
 
         //turn if within left or right 10% of screen
-        if (temp.x/_camera.pixelWidth <= 0.1f) transform.parent.Rotate(0f, -5f, 0f);
-        else if (temp.x / _camera.pixelWidth >= 0.9f) transform.parent.Rotate(0f, 5f, 0f);
+        if (temp.x/_camera.pixelWidth <= 0.1f) transform.parent.Rotate(0f, -1f, 0f);
+        else if (temp.x / _camera.pixelWidth >= 0.9f) transform.parent.Rotate(0f, 1f, 0f);
 
         if (Input.GetButtonDown(fireButton)) Fire();
         if (Input.GetButtonDown(cycleButton)) CycleMode();
@@ -78,6 +85,6 @@ public class Controller : MonoBehaviour
 
     private void Fire()
     {
-        Instantiate(loadedBullet,transform.position,Quaternion.identity);
+        Instantiate(loadedBullet,transform.position,transform.parent.rotation);
     }
 }

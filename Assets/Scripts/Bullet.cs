@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour
         damage = 1f;
 
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.AddForce(Vector3.forward);
+        _rigidbody.AddForce(transform.forward);
     }
 
     // Update is called once per frame

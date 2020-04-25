@@ -10,6 +10,7 @@ public class Asteroid : MonoBehaviour
     //private int stage;
     //private int speed;
 
+    private Rigidbody _rigidbody;
     private Duster player;
 
     // Start is called before the first frame update
@@ -17,7 +18,13 @@ public class Asteroid : MonoBehaviour
     {
         value = 0;
         health = 1f;
+
+        _rigidbody = GetComponent<Rigidbody>();
+
         player = GameObject.Find("Player").GetComponent<Duster>();
+
+        transform.forward = player.transform.position - transform.position;
+        _rigidbody.AddForce(transform.forward);
     }
 
     // Update is called once per frame
