@@ -5,32 +5,65 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     private int mode;
+    private MeshRenderer _renderer;
 
+    private Camera _camera;
     [SerializeField]
-    private string aimAxisX;
-    [SerializeField]
-    private string aimAxisY;
+    private bool usingMouse;
     [SerializeField]
     private string cycleButton;
     [SerializeField]
     private string fireButton;
 
-    private MeshRenderer _renderer;
-    private Rigidbody _rigidbody;
+    private GameObject loadedBullet;
 
     // Start is called before the first frame update
     void Start()
     {
         mode = 0;
-        _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<MeshRenderer>();
         _renderer.material = Duster.Modes[mode];
+
+        _camera = Camera.main;
+
+        loadedBullet = Duster.Bullets[mode];
     }
 
     // Update is called once per frame
     void Update()
     {
         //aim
+        Vector3 temp;
+        if (usingMouse)
+        {
+            temp = Input.mousePosition;
+            temp.z = 0.5f;
+            temp = _camera.ScreenToWorldPoint(temp);
+            if (temp != transform.position) transform.SetPositionAndRotation(temp, transform.rotation);
+
+            // setting temp for reuse with turning logic
+            temp = Input.mousePosition;
+        }
+        else
+        { // this breaks when parent is rotating, todo fix
+            temp = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
+            if (temp != Vector3.zero)
+            {
+                transform.Translate(temp);
+                Debug.Log(temp);
+                // fix z axis
+                temp = transform.position;
+                temp.z = 1f;
+                transform.SetPositionAndRotation(temp, transform.rotation);
+            }
+            // translate to screen for turn
+            temp = _camera.WorldToScreenPoint(transform.position);
+        }
+
+        //turn if within left or right 10% of screen
+        if (temp.x/_camera.pixelWidth <= 0.1f) transform.parent.Rotate(0f, -5f, 0f);
+        else if (temp.x / _camera.pixelWidth >= 0.9f) transform.parent.Rotate(0f, 5f, 0f);
+
         if (Input.GetButtonDown(fireButton)) Fire();
         if (Input.GetButtonDown(cycleButton)) CycleMode();
     }
@@ -40,10 +73,11 @@ public class Controller : MonoBehaviour
         mode++;
         if (mode > 3) mode = 0;
         _renderer.material = Duster.Modes[mode];
+        loadedBullet = Duster.Bullets[mode];
     }
 
     private void Fire()
     {
-
+        Instantiate(loadedBullet,transform.position,Quaternion.identity);
     }
 }

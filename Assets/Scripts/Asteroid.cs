@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    public int scoreValue;
+    // value increases as health decreases, damage = health
+    private float value;
+    private float health;
+    //private int stage;
+    //private int speed;
+
     private Duster player;
 
     // Start is called before the first frame update
     void Start()
     {
-        scoreValue = 1;
+        value = 0;
+        health = 1f;
         player = GameObject.Find("Player").GetComponent<Duster>();
     }
 
@@ -22,7 +28,22 @@ public class Asteroid : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        player.ChangeScore(scoreValue);
-        Destroy(gameObject);
+        if (collision.gameObject.GetComponent<Duster>() != null)
+        {
+            player.TakeDamage(health);
+            Destroy(gameObject);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        value += Mathf.Min(damage, health);
+        health -= damage;
+
+        if (health <= 0)
+        {
+            player.ChangeScore(Mathf.RoundToInt(value));
+            Destroy(gameObject);
+        }
     }
 }
