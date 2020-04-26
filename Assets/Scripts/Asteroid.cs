@@ -27,10 +27,10 @@ public class Asteroid : MonoBehaviour
         _rigidbody.AddForce(transform.forward);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Initialise(float difficulty)
     {
-        
+        health *= 1 + difficulty;
+        transform.localScale *= 1 + (difficulty * 0.01f);
     }
 
     private void OnCollisionEnter(Collision collision)

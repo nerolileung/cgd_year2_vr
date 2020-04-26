@@ -28,11 +28,11 @@ public class Alert : MonoBehaviour
             if (asteroids[i] == null)
             {
                 asteroids.RemoveAt(i);
-                if (asteroids.Count == 0) continue;
+                continue;
             }
-            screenPos = _camera.WorldToScreenPoint(asteroids[i].transform.position);
-            if (screenPos.x < 0) incomingLeft = true;
-            else if (screenPos.x > _camera.pixelWidth) incomingRight = true;
+            float angle = Vector3.SignedAngle(asteroids[i].transform.position,_camera.transform.forward,Vector3.up);
+            if (angle > 25f) incomingLeft = true;
+            else if (angle < -25f) incomingRight = true;
         }
 
         player.Alert(true, incomingLeft);

@@ -55,13 +55,8 @@ public class Controller : MonoBehaviour
                 temp.y += transform.localPosition.y;
                 temp.z = 1f;
 
-                // mimic cursor lock
-                if (temp.x < -0.58f) temp.x = -0.55f;
-                else if (temp.x > 0.58f) temp.x = 0.55f;
-                if (temp.y > 0.8f) temp.y = 0.75f;
-                else if (temp.y < 0.15f) temp.y = 0.2f;
-
                 transform.localPosition = temp;
+                KeyboardControllerLock();
             }
             // translate to screen for turn
             temp = _camera.WorldToScreenPoint(transform.position);
@@ -86,5 +81,36 @@ public class Controller : MonoBehaviour
     private void Fire()
     {
         Instantiate(loadedBullet,transform.position,transform.parent.rotation);
+    }
+
+    private void KeyboardControllerLock()
+    {
+        // if go off screen, don't
+        Vector3 screenPosition = _camera.WorldToScreenPoint(transform.position);
+        bool positionChanged = false;
+        // horizontal
+        if (screenPosition.x < 0.5f)
+        {
+            screenPosition.x = 0.5f;
+            positionChanged = true;
+        }
+        else if (screenPosition.x > _camera.pixelWidth-0.5f)
+        {
+            screenPosition.x = _camera.pixelWidth - 0.5f;
+            positionChanged = true;
+        }
+        //vertical
+        if (screenPosition.y < 0.5f)
+        {
+            screenPosition.y = 0.5f;
+            positionChanged = true;
+        }
+        else if (screenPosition.y > _camera.pixelHeight-0.5f)
+        {
+            screenPosition.y = _camera.pixelHeight - 0.5f;
+            positionChanged = true;
+        }
+
+        if (positionChanged) transform.position = _camera.ScreenToWorldPoint(screenPosition);
     }
 }

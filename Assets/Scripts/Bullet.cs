@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(startingPos, transform.position) > 6) Destroy(gameObject);
+        if (Vector3.Distance(startingPos, transform.position) > 10) Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
