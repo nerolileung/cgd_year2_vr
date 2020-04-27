@@ -13,6 +13,7 @@ public class Duster : MonoBehaviour
     private static RectTransform healthBar;
 
     private static Animator uiAnimator;
+    private static AudioSource hurtSound;
 
     private float timerFull = 5f;
     private float timerCurrent;
@@ -58,6 +59,8 @@ public class Duster : MonoBehaviour
         asteroidCount = 0;
         difficulty = 0;
 
+        hurtSound = GetComponent<AudioSource>();
+
         deathFreeze = false;
     }
 
@@ -87,6 +90,8 @@ public class Duster : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (!hurtSound.isPlaying) hurtSound.Play();
+
         if (!deathFreeze)
         {
             currentHealth -= damage;

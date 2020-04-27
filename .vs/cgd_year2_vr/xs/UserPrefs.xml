@@ -1,15 +1,15 @@
 ﻿<Properties StartupConfiguration="{62EF6548-0310-B374-BBD7-84FD5C652ABC}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Alert.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Duster.cs">
     <Files>
       <File FileName="Assets/Scripts/Asteroid.cs" Line="31" Column="6" />
-      <File FileName="Assets/Scripts/Controller.cs" Line="59" Column="42" />
+      <File FileName="Assets/Scripts/Controller.cs" />
       <File FileName="Assets/Scripts/Alert.cs" Line="18" Column="39" />
-      <File FileName="Assets/Scripts/Duster.cs" Line="11" Column="39" />
+      <File FileName="Assets/Scripts/Duster.cs" Line="93" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3b624b1c-712e-4290-97a1-e696845ee4f4" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="a60685f4-717c-43f0-90f4-7bd5ab8faa9d" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
